@@ -6,8 +6,11 @@ import { useNavigate } from '@remix-run/react';
 import { addExpense } from '~/data/expenses.server';
 import { redirect } from '@remix-run/node';
 import { validateExpenseInput } from '~/data/validation.server';
+import { requireUserSession } from '../../../data/auth.server';
 
 export async function action({ request }) {
+    const userId = await requireUserSession(request);
+
     const formData = await request.formData();
     const expenseData = Object.fromEntries(formData); //Converts to object so we don't use 'get' many times
     console.log(expenseData, formData);
